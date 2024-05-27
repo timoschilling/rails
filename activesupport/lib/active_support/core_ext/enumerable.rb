@@ -74,15 +74,11 @@ module Enumerable
   #   # => { created_at: 2020-03-09 22:31:47, updated_at: 2020-03-09 22:31:47 }
   def index_with(default = (no_default = true))
     if block_given?
-      result = {}
-      each { |elem| result[elem] = yield(elem) }
-      result
+      to_h { |elem| [elem, yield(elem)] }
     elsif no_default
       to_enum(:index_with) { size if respond_to?(:size) }
     else
-      result = {}
-      each { |elem| result[elem] = default }
-      result
+      to_h { |elem| [elem, default] }
     end
   end
 
